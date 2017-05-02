@@ -44,9 +44,16 @@
                 {nome:"Paulo", telefone:"9999-9999", cor: "blue"}
             ];
 
+            $scope.cores = [
+                {cor:"yellow"},
+                {cor:"blue"},
+                {cor:"red"}
+            ];
+
             $scope.adicionarContato = function (contato) {
                 $scope.contatos.push(angular.copy(contato) );
                 delete $scope.contato;
+                $scope.contatoForm.$setPristine();
             }
 
             $scope.apagarContatos = function (contatos){
@@ -80,17 +87,35 @@
                 <td>{{contato.nome}}</td>
                 <td>{{contato.telefone}}</td>
                 <td>{{contato.operadora.nome}}</td>
-                <td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor}"></div></td>
+                <td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cors.cor || contato.cor}"></div></td>
             </tr>
         </table>
         <hr/>
-        <input class="form-control" type="text" ng-model="contato.nome" placeholder="nome">
-        <input class="form-control" type="text" ng-model="contato.telefone" placeholder="telefone">
-        <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
-            <option value="">Selecione uma operadora</option>
-        </select>
+        <form name="contatoForm">
+            <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="nome" ng-required="true" ng-minlength="5">
+            <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="telefone" ng-required="true" 
+            ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/">
+            <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+                <option value="">Selecione uma operadora</option>
+            </select>
+            <select class="form-control" ng-model="contato.cors" ng-options="cors.cor for cors in cores">
+                <option value="">Selecione uma cor</option>
+            </select>
+        </form>
+        <div ng-show="contatoForm.nome.$error.required && contatoForm.nome.$dirty" class="alert alert-danger">
+            Preencha o nome.
+        </div>
+        <div ng-show="contatoForm.nome.$error.minlength" class="alert alert-danger">
+            Nome deve ter no mínimo 5 caracteres.
+        </div>
+         <div ng-show="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty" class="alert alert-danger">
+            Preencha o Telefone.
+        </div>
+        <div ng-show="contatoForm.telefone.$error.pattern" class="alert alert-danger">
+            O campo telefone deve ter o formato: 99999-9999.
+        </div>
         <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" 
-        ng-disabled="!contato.nome || !contato.telefone">Adicionar contato</button>
+        ng-disabled="contatoForm.$invalid">Adicionar contato</button>
         <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)"
         ng-show="isContatoSelecionado(contatos)">Excluir contatos</button>
     </div>
