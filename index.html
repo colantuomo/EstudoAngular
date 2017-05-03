@@ -94,7 +94,7 @@
         <form name="contatoForm">
             <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="nome" ng-required="true" ng-minlength="5">
             <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="telefone" ng-required="true" 
-            ng-minlength="10" ng-pattern="/^\d{4,5}-\d{4}$/">
+            ng-minlength="9" ng-pattern="/^\d{4,5}-\d{4}$/">
             <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
                 <option value="">Selecione uma operadora</option>
             </select>
