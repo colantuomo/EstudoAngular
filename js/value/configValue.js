@@ -1,3 +1,3 @@
 angular.module("listaTelefonica").value("config", {
-  baseUrl : "http://localhost:3000"
+  baseUrl : "https://calm-plateau-97728.herokuapp.com"
 });
